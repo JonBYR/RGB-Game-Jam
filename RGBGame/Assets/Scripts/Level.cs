@@ -24,6 +24,7 @@ public class Level
     public void Generate()
     {
         Initialize();
+        GeneratePath();
     }
     private void Initialize()
     {
