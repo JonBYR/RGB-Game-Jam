@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Tilemaps;
@@ -30,11 +31,13 @@ public class LevelGen : MonoBehaviour
     [SerializeField] private Tilemap ladders;
     [SerializeField] private Tilemap backgroundMap; //seperate tilemaps used to populate rooms
     public Tilemap GroundMap { get => groundMap; }
+
+    [System.Serializable]
     public struct Templates
     {
         public Texture2D[] images; //these relate to the image templates that can be used for each room type
     }
-    public Templates[] temps = new Templates[4]; //0,1,2,3 for each room type
+    [SerializeField] public Templates[] temps = new Templates[4]; //0,1,2,3 for each room type
     public Dictionary<Color32, TileID> byColor; //on each template, each colour on the template represents a specific tile map
     private void Awake()
     {
@@ -157,12 +160,14 @@ public class LevelGen : MonoBehaviour
     }
     public Vector3Int PlaceEntrance(Room r)
     {
+        Debug.Log("Enterence Called");
         Vector3Int p = RandomDoorPos(r);
         items.SetTile(p, tiles[(uint)TileID.ENTERANCE]); //we do not want this to be an interactable door
         return p;
     }
     public void PlaceExit(Room r)
     {
+        Debug.Log("Called");
         Vector3Int pos = RandomDoorPos(r);
         doorMap.SetTile(pos, tiles[(uint)TileID.ENTERANCE]);
     }
@@ -178,5 +183,21 @@ public class LevelGen : MonoBehaviour
         }
         Vector3Int doorP = availablePos[Random.Range(0, availablePos.Count)];
         return doorP;
+    }
+    void DrawPath()
+    {
+        Room previous = null;
+        foreach (Room i in l.Path)
+        {
+            if (previous != null)
+            {
+                Handles.color = Color.white;
+                Handles.DrawDottedLine(i.centre(), previous.centre(), 3);
+                Handles.color = Color.magenta;
+                Quaternion rot = Quaternion.LookRotation(i.centre() - previous.centre()).normalized;
+                Handles.ConeHandleCap(0, (i.centre() + previous.centre()) / 2 + (previous.centre() - i.centre()).normalized, rot, 1f, EventType.Repaint);
+            }
+            previous = i;
+        }
     }
 }
