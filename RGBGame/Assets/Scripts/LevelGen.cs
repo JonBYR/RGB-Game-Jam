@@ -12,6 +12,7 @@ public class LevelGen : MonoBehaviour
     [SerializeField] private int lWidth = 4;
     Level l;
     public Vector3 spawnPos;
+    public GameObject enemyPrefab;
     public enum TileID : uint //these can be the types of tiles that appear in each room
     {
         DIRT,
@@ -53,6 +54,7 @@ public class LevelGen : MonoBehaviour
         };
         play = FindObjectOfType<PlayerController>();
         Generation();
+        Invoke("EnemySpawn", 2.0f);
     }
     //public Player play;
     public bool setup;
@@ -200,5 +202,9 @@ public class LevelGen : MonoBehaviour
             }
             previous = i;
         }
+    }
+    void EnemySpawn()
+    {
+        Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
     }
 }
