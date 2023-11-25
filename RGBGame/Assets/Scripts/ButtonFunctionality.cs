@@ -8,6 +8,7 @@ public class ButtonFunctionality : MonoBehaviour
     public Button MainButton;
     public Button QuitButton;
     public Button LoadGame;
+    public Label goldText;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +19,8 @@ public class ButtonFunctionality : MonoBehaviour
         QuitButton.clicked += QuitGame;
         LoadGame = route.Q<Button>("LoadButton");
         LoadGame.clicked += LoadLevel;
+        goldText = route.Q<Label>("GoldText");
+        goldText.text = "You have salvaged: " + PlayerController.amountOfGold.ToString();
     }
 
     // Update is called once per frame
