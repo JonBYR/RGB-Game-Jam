@@ -41,7 +41,6 @@ public class EnemyController : MonoBehaviour
         {
             currentTarget = play.lastPosition();
         }
-        //if (priorPos == transform.position) currentTarget = play.lastPosition();
         
         Vector3 direction = currentTarget - transform.position;
         direction.Normalize();
