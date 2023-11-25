@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
         scale.x *= -1;
         transform.localScale = scale;
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player")
         {
