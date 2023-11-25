@@ -4,7 +4,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.Tilemaps;
-using static UnityEditor.PlayerSettings;
 
 public class LevelGen : MonoBehaviour
 {
@@ -194,22 +193,22 @@ public class LevelGen : MonoBehaviour
         Vector3Int doorP = availablePos[Random.Range(0, availablePos.Count)];
         return doorP;
     }
-    void DrawPath()
-    {
-        Room previous = null;
-        foreach (Room i in l.Path)
-        {
-            if (previous != null)
-            {
-                Handles.color = Color.white;
-                Handles.DrawDottedLine(i.centre(), previous.centre(), 3);
-                Handles.color = Color.magenta;
-                Quaternion rot = Quaternion.LookRotation(i.centre() - previous.centre()).normalized;
-                Handles.ConeHandleCap(0, (i.centre() + previous.centre()) / 2 + (previous.centre() - i.centre()).normalized, rot, 1f, EventType.Repaint);
-            }
-            previous = i;
-        }
-    }
+    //void DrawPath()
+    //{
+    //    Room previous = null;
+    //    foreach (Room i in l.Path)
+    //    {
+    //        if (previous != null)
+    //        {
+    //            Handles.color = Color.white;
+    //            Handles.DrawDottedLine(i.centre(), previous.centre(), 3);
+    //            Handles.color = Color.magenta;
+    //            Quaternion rot = Quaternion.LookRotation(i.centre() - previous.centre()).normalized;
+    //            Handles.ConeHandleCap(0, (i.centre() + previous.centre()) / 2 + (previous.centre() - i.centre()).normalized, rot, 1f, EventType.Repaint);
+    //        }
+    //        previous = i;
+    //    }
+    //}
     void EnemySpawn()
     {
         Instantiate(enemyPrefab, spawnPos, Quaternion.identity);

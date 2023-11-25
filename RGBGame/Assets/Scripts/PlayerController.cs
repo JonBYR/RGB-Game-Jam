@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.Tilemaps;
@@ -32,6 +31,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        amountOfGold = 0;
         playerRb = GetComponent<Rigidbody2D>();
         l = FindObjectOfType<LevelGen>();
         ground = l.GroundMap;

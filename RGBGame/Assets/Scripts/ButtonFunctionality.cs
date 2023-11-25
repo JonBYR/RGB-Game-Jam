@@ -9,6 +9,7 @@ public class ButtonFunctionality : MonoBehaviour
     public Button QuitButton;
     public Button LoadGame;
     public Button startGame;
+    public Button secondQuit;
     public Label goldText;
     public Label stateText;
     public VisualElement start;
@@ -37,11 +38,13 @@ public class ButtonFunctionality : MonoBehaviour
         startGame.clicked += Load;
         QuitButton = route.Q<Button>("Quit");
         QuitButton.clicked += QuitGame;
+        secondQuit = route.Q<Button>("Quit1");
+        secondQuit.clicked += QuitGame;
         goldText = route.Q<Label>("GoldText");
         goldText.text = "You have salvaged: " + PlayerController.amountOfGold.ToString();
         stateText = route.Q<Label>("SceneState");
-        if (SceneManager.GetActiveScene().name == "WinScene") { end.visible = true;  stateText.text = "You Won!"; }
-        else if (SceneManager.GetActiveScene().name == "GameOver") { end.visible = true; stateText.text = "Game Over!"; }
+        if (SceneManager.GetActiveScene().name == "WinScene") { end.visible = true;  credit.visible = false; start.visible = false; stateText.text = "You Won!"; }
+        else if (SceneManager.GetActiveScene().name == "GameOver") { end.visible = true; credit.visible = false; start.visible = false; stateText.text = "Game Over!"; }
         Time.timeScale = 0;
     }
     void LoadMain()
