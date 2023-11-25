@@ -39,6 +39,7 @@ public class LevelGen : MonoBehaviour
     }
     [SerializeField] public Templates[] temps = new Templates[4]; //0,1,2,3 for each room type
     public Dictionary<Color32, TileID> byColor; //on each template, each colour on the template represents a specific tile map
+    public PlayerController play;
     private void Awake()
     {
         byColor = new Dictionary<Color32, TileID>()
@@ -50,7 +51,7 @@ public class LevelGen : MonoBehaviour
             [Color.white] = TileID.EMPTY,
             [Color.clear] = TileID.EMPTY
         };
-        //play = FindObjectOfType<Player>();
+        play = FindObjectOfType<PlayerController>();
         Generation();
     }
     //public Player play;
@@ -64,7 +65,7 @@ public class LevelGen : MonoBehaviour
         l = new Level(lWidth, lHeight);
         l.Generate();
         RoomBuilder();
-        //play.transform.position = spawnPos;
+        play.transform.position = spawnPos;
         watch.Stop();
         var elpasedMs = watch.ElapsedMilliseconds;
         setup = false;
