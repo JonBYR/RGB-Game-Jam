@@ -14,6 +14,7 @@ public class LevelGen : MonoBehaviour
     public Vector3 spawnPos;
     public GameObject enemyPrefab;
     public GameObject itemPrefab;
+    public static int levelNumber = 1;
     public enum TileID : uint //these can be the types of tiles that appear in each room
     {
         DIRT,
@@ -73,12 +74,18 @@ public class LevelGen : MonoBehaviour
         var elpasedMs = watch.ElapsedMilliseconds;
         setup = false;
     }
+    private void Update()
+    {
+        if (play.enterDoor == true) Generation();
+    }
     private void ClearTiles()
     {
         groundMap.ClearAllTiles();
         doorMap.ClearAllTiles();
         items.ClearAllTiles();
         ladders.ClearAllTiles(); //clears all relevent tilemaps
+        //GameObject[] gold = GameObject.FindGameObjectsWithTag("Item");
+        //foreach (GameObject g in gold) Destroy(g);
     }
     private void Border()
     {
@@ -165,14 +172,12 @@ public class LevelGen : MonoBehaviour
     }
     public Vector3Int PlaceEntrance(Room r)
     {
-        Debug.Log("Enterence Called");
         Vector3Int p = RandomDoorPos(r);
         items.SetTile(p, tiles[(uint)TileID.ENTERANCE]); //we do not want this to be an interactable door
         return p;
     }
     public void PlaceExit(Room r)
     {
-        Debug.Log("Called");
         Vector3Int pos = RandomDoorPos(r);
         doorMap.SetTile(pos, tiles[(uint)TileID.ENTERANCE]);
     }

@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     private bool jump;
     private bool onLadder;
     private bool isClimbing;
-    private bool enterDoor;
+    public bool enterDoor;
     private Rigidbody2D playerRb;
     private LevelGen l;
     private float horizontalDirection;
@@ -119,7 +119,8 @@ public class PlayerController : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.E) && enterDoor == false)
             {
-                Debug.Log("Door Entered");
+                Debug.Log("EnterDoor");
+                enterDoor = true;
             }
         }
     }
