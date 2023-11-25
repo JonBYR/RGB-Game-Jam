@@ -5,7 +5,7 @@ using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.Tilemaps;
-
+using TMPro;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5.0f;
@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask grLayer; //used for Physics2D Raycasting
     [SerializeField] int maxJumps = 2;
     private int jumpsLeft;
+    public static int amountOfGold = 0;
+    public TextMeshProUGUI amountText;
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +68,7 @@ public class PlayerController : MonoBehaviour
         {
             Flip();
         }
+        amountText.text = "Current Gold " + amountOfGold.ToString();
     }
     private void FixedUpdate()
     {
@@ -94,6 +97,15 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position - transform.up * castDistance, boxSize);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Item")
+        {
+            amountOfGold++;
+            Debug.Log(amountOfGold);
+            Destroy(collision.gameObject);
+        }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {

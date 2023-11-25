@@ -13,6 +13,7 @@ public class LevelGen : MonoBehaviour
     Level l;
     public Vector3 spawnPos;
     public GameObject enemyPrefab;
+    public GameObject itemPrefab;
     public enum TileID : uint //these can be the types of tiles that appear in each room
     {
         DIRT,
@@ -141,10 +142,11 @@ public class LevelGen : MonoBehaviour
         foreach(Room.Tile t in r.tiles)
         {
             var p = t.pos;
-            if(groundMap.GetTile(p) == null && groundMap.GetTile(p + Vector3Int.down) != null) //check that there is empty space and a platform below for the item
+            var offsetP = new Vector3(p.x + 0.5f, p.y + 0.5f, 0);
+            if (groundMap.GetTile(p) == null && groundMap.GetTile(p + Vector3Int.down) != null) //check that there is empty space and a platform below for the item
             {
-                if (CheckWalls(p, groundMap) > 2 && Random.value < 0.5f) items.SetTile(p, tiles[(uint)TileID.ITEM]);
-                else if (Random.value < 0.2f) items.SetTile(p, tiles[(uint)TileID.ITEM]);
+                if (CheckWalls(p, groundMap) > 2 && Random.value < 0.5f) Instantiate(itemPrefab, offsetP, Quaternion.identity);
+                else if (Random.value < 0.2f) Instantiate(itemPrefab, offsetP, Quaternion.identity); //Random.value may be refering to the noise function in rule tiles
             }
         }
     }
