@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
@@ -116,7 +117,9 @@ public class PlayerController : MonoBehaviour
         {
             onLadder = false;
         }
-
-        
+    }
+    public Vector3 lastPosition()
+    {
+        return playerRb.transform.position;
     }
 }

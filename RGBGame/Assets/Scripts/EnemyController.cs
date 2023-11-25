@@ -7,19 +7,26 @@ public class EnemyController : MonoBehaviour
 {
     public float speed = 0.5f;
     private Transform playerTarget;
+    private PlayerController play;
+    private Vector3 currentTarget;
     private float flipDirection;
     private bool facingRight = false;
     private Rigidbody2D enemyRb;
     private void Awake()
     {
-        playerTarget = GameObject.Find("Player").GetComponent<Transform>();
+        play = GameObject.Find("Player").GetComponent<PlayerController>();
         enemyRb = GetComponent<Rigidbody2D>();
+        currentTarget = play.lastPosition();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 direction = playerTarget.position - transform.position;
+        if ((Vector3.Magnitude(currentTarget - transform.position) <= 0))
+        {
+            currentTarget = play.lastPosition();
+        }
+        Vector3 direction = currentTarget - transform.position;
         direction.Normalize();
         flipDirection = direction.x;
         if(flipDirection < 0 && !facingRight)
@@ -30,7 +37,7 @@ public class EnemyController : MonoBehaviour
         {
             Flip();
         }
-        transform.position = Vector2.MoveTowards(transform.position, playerTarget.position, speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
         enemyRb.MovePosition((Vector2)transform.position + ((Vector2)direction * speed * Time.deltaTime));
 
     }
