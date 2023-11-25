@@ -102,6 +102,13 @@ public class PlayerController : MonoBehaviour
             Vector3Int ladderPos = ground.WorldToCell(transform.position);
             var test = ground.GetCellCenterWorld(ladderPos);
         }
+        if(collision.tag == "Door")
+        {
+            if(Input.GetKeyDown(KeyCode.E) && enterDoor == false)
+            {
+                Debug.Log("Door Entered");
+            }
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
