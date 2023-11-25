@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
 using UnityEngine.Tilemaps;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5.0f;
@@ -117,10 +118,11 @@ public class PlayerController : MonoBehaviour
         }
         if(collision.tag == "Door")
         {
-            if(Input.GetKeyDown(KeyCode.E) && enterDoor == false)
+            if(enterDoor == false)
             {
                 Debug.Log("EnterDoor");
                 enterDoor = true;
+                SceneManager.LoadScene("WinScene");
             }
         }
     }
