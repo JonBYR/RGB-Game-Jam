@@ -11,11 +11,13 @@ public class PlayerController : MonoBehaviour
     public float jumpingForce = 40f;
     private bool facingRight;
     private bool jump;
-    private bool doubleJump;
+    private bool onLadder;
+    private bool isClimbing;
     private bool enterDoor;
     private Rigidbody2D playerRb;
     private LevelGen l;
     private float horizontalDirection;
+    private float vertical;
     private Tilemap ground;
     //public BoxCollider2D playercoll;
     public Vector2 boxSize;
@@ -31,7 +33,7 @@ public class PlayerController : MonoBehaviour
         ground = l.GroundMap;
         jump = false;
         enterDoor = false;
-        doubleJump = false;
+        onLadder = false;
         facingRight = false;
         jumpsLeft = maxJumps;
     }
@@ -40,12 +42,14 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         horizontalDirection = Input.GetAxisRaw("Horizontal") * speed;
+        vertical = Input.GetAxis("Vertical");
+        if (onLadder && Mathf.Abs(vertical) > 0f) isClimbing = true;
+        else isClimbing = false;
         jump = Input.GetKeyDown(KeyCode.Space);//; //this code will check to see if a player can jump
         //as we are checking if player is on ground
         playerRb.velocity = new Vector2(horizontalDirection, playerRb.velocity.y);
         if(isGrounded() && playerRb.velocity.y <= 0)
         {
-            Debug.Log("Ground found");
             jumpsLeft = maxJumps;
         }
         if (jump && jumpsLeft > 0)
@@ -62,6 +66,15 @@ public class PlayerController : MonoBehaviour
             Flip();
         }
     }
+    private void FixedUpdate()
+    {
+        if (isClimbing)
+        {
+            playerRb.gravityScale = 0f;
+            playerRb.velocity = new Vector2(playerRb.velocity.x, vertical * speed);
+        }
+        else playerRb.gravityScale = 1f;
+    }
     private void Flip()
     {
         facingRight = !facingRight;
@@ -73,7 +86,6 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, grLayer)) 
         {
-            Debug.Log("True return");
             return true;
         }
         else return false;
@@ -81,5 +93,23 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position - transform.up * castDistance, boxSize);
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Ladder"))
+        {
+            onLadder = true;
+            Vector3Int ladderPos = ground.WorldToCell(transform.position);
+            var test = ground.GetCellCenterWorld(ladderPos);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ladder"))
+        {
+            onLadder = false;
+        }
+
+        
     }
 }
