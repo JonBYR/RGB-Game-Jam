@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
         }
         if (jump && jumpsLeft > 0)
         {
-            playerRb.velocity = new Vector2(horizontalDirection, jumpingForce);
+            playerRb.velocity = new Vector2(horizontalDirection, jumpingForce); //jumping force applied to rigidbody equal to a positive direction updwards
             jumpsLeft -= 1;
         }
         if (horizontalDirection < 0 && !facingRight)
@@ -75,8 +75,8 @@ public class PlayerController : MonoBehaviour
     {
         if (isClimbing)
         {
-            playerRb.gravityScale = 0f;
-            playerRb.velocity = new Vector2(playerRb.velocity.x, vertical * speed);
+            playerRb.gravityScale = 0f; //have no gravity on player while climbing
+            playerRb.velocity = new Vector2(playerRb.velocity.x, vertical * speed); //have player move up or down based on if the up or down arrow is pressed
         }
         else playerRb.gravityScale = 1f;
     }
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
     }
     private bool isGrounded()
     {
-        if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, grLayer)) 
+        if (Physics2D.BoxCast(transform.position, boxSize, 0, -transform.up, castDistance, grLayer)) //draws a box raycast and checks if any of the ground layer is touched by the player
         {
             return true;
         }
@@ -110,10 +110,10 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.CompareTag("Ladder"))
+        if(collision.CompareTag("Ladder")) //if player is on ladder
         {
             onLadder = true;
-            Vector3Int ladderPos = ground.WorldToCell(transform.position);
+            Vector3Int ladderPos = ground.WorldToCell(transform.position); //ensures player stays on ladder
             var test = ground.GetCellCenterWorld(ladderPos);
         }
         if(collision.tag == "Door")
@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
             if(enterDoor == false)
             {
                 Debug.Log("EnterDoor");
-                enterDoor = true;
+                enterDoor = true; //door entered as soon as player enters door trigger
                 SceneManager.LoadScene("WinScene");
             }
         }
